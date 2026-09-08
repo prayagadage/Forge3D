@@ -6,47 +6,36 @@ export default function CartDrawer() {
 
   return (
     <>
-      <div
-        className={`drawer-overlay ${isOpen ? 'drawer-overlay--open' : ''}`}
-        onClick={() => setIsOpen(false)}
-        aria-hidden="true"
-      />
-      <aside
-        className={`drawer ${isOpen ? 'drawer--open' : ''}`}
-        role="dialog"
-        aria-label="Shopping cart"
-        aria-modal="true"
-      >
+      <div className={`drawer-overlay ${isOpen ? 'drawer-overlay--open' : ''}`} onClick={() => setIsOpen(false)} aria-hidden="true" />
+      <aside className={`drawer ${isOpen ? 'drawer--open' : ''}`} role="dialog" aria-label="Shopping cart" aria-modal="true">
         <div className="drawer__header">
           <h2 className="drawer__title">Cart ({itemCount})</h2>
-          <button
-            className="btn btn--ghost btn--icon"
-            onClick={() => setIsOpen(false)}
-            aria-label="Close cart"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
+          <button className="btn btn--ghost btn--icon" onClick={() => setIsOpen(false)} aria-label="Close cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
 
         <div className="drawer__body">
           {items.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-state__icon">🛒</div>
+              <div className="empty-state__icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+              </div>
               <h3 className="empty-state__title">Your cart is empty</h3>
               <p className="empty-state__desc">Browse our products or upload your own 3D model to get started.</p>
-              <button className="btn btn--primary" onClick={() => setIsOpen(false)}>
-                Continue Shopping
-              </button>
+              <button className="btn btn--primary" onClick={() => setIsOpen(false)}>Continue Shopping</button>
             </div>
           ) : (
             items.map(item => (
               <div className="cart-item" key={item.key}>
                 <div className="cart-item__image">
-                  <div style={{ width: '100%', height: '100%', background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>
-                    {item.product.category === 'custom' ? '📄' : '🎨'}
-                  </div>
+                  {item.product.image ? (
+                    <img src={item.product.image} alt={item.product.name} />
+                  ) : (
+                    <div style={{ width: '100%', height: '100%', background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
+                  )}
                 </div>
                 <div className="cart-item__details">
                   <div className="cart-item__name">{item.product.name}</div>
@@ -64,15 +53,8 @@ export default function CartDrawer() {
                     <div className="cart-item__price">${(item.product.price * item.quantity).toFixed(2)}</div>
                   </div>
                 </div>
-                <button
-                  className="file-info__remove"
-                  onClick={() => removeItem(item.key)}
-                  aria-label={`Remove ${item.product.name}`}
-                  style={{ alignSelf: 'start', padding: '4px' }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                  </svg>
+                <button className="file-info__remove" onClick={() => removeItem(item.key)} aria-label={`Remove ${item.product.name}`} style={{ alignSelf: 'start', padding: '4px' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
               </div>
             ))
@@ -82,25 +64,11 @@ export default function CartDrawer() {
         {items.length > 0 && (
           <div className="drawer__footer">
             <div className="price-summary">
-              <div className="price-summary__row">
-                <span>Subtotal</span>
-                <span>${cartTotal.toFixed(2)}</span>
-              </div>
-              <div className="price-summary__row">
-                <span>Shipping</span>
-                <span>Calculated at checkout</span>
-              </div>
-              <div className="price-summary__total">
-                <span>Total</span>
-                <span>${cartTotal.toFixed(2)}</span>
-              </div>
+              <div className="price-summary__row"><span>Subtotal</span><span>${cartTotal.toFixed(2)}</span></div>
+              <div className="price-summary__row"><span>Shipping</span><span>Calculated at checkout</span></div>
+              <div className="price-summary__total"><span>Total</span><span>${cartTotal.toFixed(2)}</span></div>
             </div>
-            <Link
-              to="/checkout"
-              className="btn btn--primary btn--lg btn--full"
-              style={{ marginTop: 'var(--sp-4)' }}
-              onClick={() => setIsOpen(false)}
-            >
+            <Link to="/checkout" className="btn btn--primary btn--lg btn--full" style={{ marginTop: 'var(--sp-4)' }} onClick={() => setIsOpen(false)}>
               Checkout — ${cartTotal.toFixed(2)}
             </Link>
           </div>

@@ -11,7 +11,6 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [activeImage, setActiveImage] = useState(0);
   const [openSection, setOpenSection] = useState(null);
 
   if (!product) {
@@ -19,7 +18,9 @@ export default function ProductDetail() {
       <main>
         <div className="container">
           <div className="empty-state" style={{ minHeight: '60vh' }}>
-            <div className="empty-state__icon">😕</div>
+            <div className="empty-state__icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </div>
             <h3 className="empty-state__title">Product not found</h3>
             <p className="empty-state__desc">We couldn't find the product you're looking for.</p>
             <Link to="/explore" className="btn btn--primary">Browse Products</Link>
@@ -29,10 +30,9 @@ export default function ProductDetail() {
     );
   }
 
-  // Set defaults
   if (!selectedColor && product.colors.length > 0) {
     setSelectedColor(product.colors[0]);
-    return null; // re-render
+    return null;
   }
   if (!selectedSize && product.sizes.length > 0) {
     setSelectedSize(product.sizes[0]);
@@ -56,9 +56,9 @@ export default function ProductDetail() {
         {/* Breadcrumb */}
         <nav className="product-info__breadcrumb" aria-label="Breadcrumb" style={{ marginBottom: 'var(--sp-6)' }}>
           <Link to="/">Home</Link>
-          <span aria-hidden="true">/</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
           <Link to="/explore">Products</Link>
-          <span aria-hidden="true">/</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
           <span style={{ color: 'var(--text-primary)' }}>{product.name}</span>
         </nav>
 
@@ -66,33 +66,7 @@ export default function ProductDetail() {
           {/* Gallery */}
           <div className="gallery">
             <div className="gallery__main">
-              <div style={{
-                width: '100%', height: '100%',
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--border) 100%)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '5rem',
-              }}>
-                {['🏠','🖥️','🎮','🎨','📦','⚙️','🎁'][activeImage % 7]}
-              </div>
-            </div>
-            <div className="gallery__thumbs">
-              {product.images.map((_, i) => (
-                <button
-                  key={i}
-                  className={`gallery__thumb ${activeImage === i ? 'gallery__thumb--active' : ''}`}
-                  onClick={() => setActiveImage(i)}
-                  aria-label={`View image ${i + 1}`}
-                >
-                  <div style={{
-                    width: '100%', height: '100%',
-                    background: 'var(--surface)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '1.25rem',
-                  }}>
-                    {['🏠','🖥️','🎮','🎨','📦','⚙️','🎁'][i % 7]}
-                  </div>
-                </button>
-              ))}
+              <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
 
@@ -162,23 +136,9 @@ export default function ProductDetail() {
             {/* Quantity + ATC */}
             <div style={{ display: 'flex', gap: 'var(--sp-4)', alignItems: 'center', flexWrap: 'wrap' }}>
               <div className="quantity-control">
-                <button
-                  className="quantity-control__btn"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  aria-label="Decrease quantity"
-                >−</button>
-                <input
-                  className="quantity-control__value"
-                  type="text"
-                  value={quantity}
-                  readOnly
-                  aria-label="Quantity"
-                />
-                <button
-                  className="quantity-control__btn"
-                  onClick={() => setQuantity(quantity + 1)}
-                  aria-label="Increase quantity"
-                >+</button>
+                <button className="quantity-control__btn" onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Decrease quantity">−</button>
+                <input className="quantity-control__value" type="text" value={quantity} readOnly aria-label="Quantity" />
+                <button className="quantity-control__btn" onClick={() => setQuantity(quantity + 1)} aria-label="Increase quantity">+</button>
               </div>
               <button className="btn btn--primary btn--lg" onClick={handleAddToCart} style={{ flex: 1 }}>
                 Add to Cart — ${(product.price * quantity).toFixed(2)}
@@ -186,32 +146,33 @@ export default function ProductDetail() {
             </div>
 
             {/* Delivery info */}
-            <div style={{
-              display: 'flex', gap: 'var(--sp-4)', flexWrap: 'wrap',
-              fontSize: 'var(--fs-small)', color: 'var(--text-secondary)',
-            }}>
-              <span>📦 {product.printTime}</span>
-              <span>📐 {product.dimensions}</span>
+            <div style={{ display: 'flex', gap: 'var(--sp-6)', flexWrap: 'wrap', fontSize: 'var(--fs-small)', color: 'var(--text-secondary)' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                {product.printTime}
+              </span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+                {product.dimensions}
+              </span>
             </div>
 
             {/* Expandable sections */}
             <div style={{ borderTop: '1px solid var(--border)', marginTop: 'var(--sp-2)' }}>
-              {/* Description */}
               <div className={`expandable ${openSection === 'desc' ? 'expandable--open' : ''}`}>
                 <button className="expandable__trigger" onClick={() => toggleSection('desc')}>
                   Description
-                  <span className="expandable__icon">▾</span>
+                  <svg className="expandable__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 {openSection === 'desc' && (
                   <div className="expandable__content">{product.description}</div>
                 )}
               </div>
 
-              {/* Features */}
               <div className={`expandable ${openSection === 'features' ? 'expandable--open' : ''}`}>
                 <button className="expandable__trigger" onClick={() => toggleSection('features')}>
                   Features
-                  <span className="expandable__icon">▾</span>
+                  <svg className="expandable__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 {openSection === 'features' && (
                   <div className="expandable__content">
@@ -222,11 +183,10 @@ export default function ProductDetail() {
                 )}
               </div>
 
-              {/* Specs */}
               <div className={`expandable ${openSection === 'specs' ? 'expandable--open' : ''}`}>
                 <button className="expandable__trigger" onClick={() => toggleSection('specs')}>
                   Specifications
-                  <span className="expandable__icon">▾</span>
+                  <svg className="expandable__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 {openSection === 'specs' && (
                   <div className="expandable__content">
@@ -240,11 +200,10 @@ export default function ProductDetail() {
                 )}
               </div>
 
-              {/* Shipping */}
               <div className={`expandable ${openSection === 'ship' ? 'expandable--open' : ''}`}>
                 <button className="expandable__trigger" onClick={() => toggleSection('ship')}>
                   Shipping & Returns
-                  <span className="expandable__icon">▾</span>
+                  <svg className="expandable__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 {openSection === 'ship' && (
                   <div className="expandable__content">
@@ -260,9 +219,7 @@ export default function ProductDetail() {
       {/* Sticky mobile ATC */}
       <div className="sticky-atc">
         <span className="sticky-atc__price">${(product.price * quantity).toFixed(2)}</span>
-        <button className="btn btn--primary" onClick={handleAddToCart}>
-          Add to Cart
-        </button>
+        <button className="btn btn--primary" onClick={handleAddToCart}>Add to Cart</button>
       </div>
     </main>
   );

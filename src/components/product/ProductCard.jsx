@@ -11,19 +11,12 @@ export default function ProductCard({ product }) {
             {product.badge}
           </span>
         )}
-        <div
+        <img
           className="product-card__image"
-          style={{
-            background: `linear-gradient(135deg, var(--surface) 0%, var(--border) 100%)`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '3rem',
-          }}
-          aria-hidden="true"
-        >
-          {getCategoryEmoji(product.category)}
-        </div>
+          src={product.image}
+          alt={product.name}
+          loading="lazy"
+        />
       </div>
       <div className="product-card__body">
         <span className="product-card__category">{product.category.replace('-', ' ')}</span>
@@ -37,17 +30,4 @@ export default function ProductCard({ product }) {
       </div>
     </Link>
   );
-}
-
-function getCategoryEmoji(cat) {
-  const map = {
-    'home-decor': '🏠',
-    desk: '🖥️',
-    toys: '🎮',
-    art: '🎨',
-    organizers: '📦',
-    functional: '⚙️',
-    gifts: '🎁',
-  };
-  return map[cat] || '✦';
 }
