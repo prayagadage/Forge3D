@@ -10,6 +10,7 @@ import CustomPrint from './pages/CustomPrint';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import MaterialGuide from './pages/MaterialGuide';
+import GetQuote from './pages/GetQuote';
 import './index.css';
 
 function Toast() {
@@ -42,6 +43,7 @@ function AppLayout() {
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/custom-print" element={<CustomPrint />} />
         <Route path="/materials" element={<MaterialGuide />} />
+        <Route path="/get-quote" element={<GetQuote />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
       </Routes>

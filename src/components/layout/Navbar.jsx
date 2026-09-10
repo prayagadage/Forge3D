@@ -11,7 +11,7 @@ export default function Navbar() {
     { to: '/explore', label: 'Shop' },
     { to: '/custom-print', label: 'Custom Print' },
     { to: '/materials', label: 'Material Guide' },
-    { to: '/checkout', label: 'Get a Quote' },
+    { to: '/get-quote', label: 'Get a Quote' },
   ];
 
   return (

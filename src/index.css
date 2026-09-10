@@ -2027,3 +2027,71 @@ h3, .h3 { font-size: var(--fs-h3); }
     grid-template-columns: 100px 1fr 36px;
   }
 }
+
+/* ===== GET A QUOTE PAGE ===== */
+.quote-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--sp-8);
+  align-items: start;
+}
+
+.quote-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: var(--sp-8);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-2xl);
+}
+
+.quote-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.quote-contact-card {
+  background: var(--navy-900);
+  padding: var(--sp-6);
+  border-radius: var(--radius-xl);
+  border: 3px solid #7C3AED;
+  box-shadow: var(--shadow-lg);
+}
+
+.quote-whatsapp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-3) var(--sp-6);
+  background: #25D366;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  border-radius: var(--radius-full);
+  transition: all var(--ease-fast);
+}
+
+.quote-whatsapp-btn:hover {
+  background: #1DA851;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37,211,102,0.35);
+}
+
+.quote-info-card {
+  padding: var(--sp-6);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+}
+
+@media (max-width: 768px) {
+  .quote-layout {
+    grid-template-columns: 1fr;
+  }
+  .quote-form {
+    padding: var(--sp-6);
+  }
+}
