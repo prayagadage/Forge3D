@@ -32,8 +32,8 @@ export default function Home() {
 
               <h1 className="hero__title">
                 Your ideas,<br />
-                printed in <span className="highlight">3D</span>,<br />
-                shipped <span className="highlight">to you</span>.
+                printed in <span className="highlight-3d">3D</span>,<br />
+                shipped <span className="highlight-to-you">to you.</span>
               </h1>
 
               <p className="hero__subtitle">
@@ -41,10 +41,10 @@ export default function Home() {
               </p>
 
               <div className="hero__actions">
-                <Link to="/explore" className="btn btn--primary btn--lg">
+                <Link to="/explore" className="btn-brutalist-orange">
                   Explore 3D Models <Arrow />
                 </Link>
-                <Link to="/custom-print" className="btn btn--secondary btn--lg">
+                <Link to="/custom-print" className="btn-brutalist-white">
                   Print Your File
                 </Link>
               </div>
