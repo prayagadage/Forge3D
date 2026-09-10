@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+'use client';
+import Link from 'next/link';
 
 const machines = [
   { name: 'Bambu Lab X1 Carbon', count: 4, desc: 'Multicolour speed demons for decor & toys', image: '/images/hero.jpg' },

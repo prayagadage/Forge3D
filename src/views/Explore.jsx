@@ -1,42 +1,48 @@
-import { useState, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+'use client';
+import { useState, useMemo, useCallback } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import ProductCard from '../components/product/ProductCard';
 import { products, categories, searchProducts } from '../data/products';
 
 export default function Explore() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const initialCat = searchParams.get('cat') || 'all';
 
   const [search, setSearch] = useState('');
   const [activeCat, setActiveCat] = useState(initialCat);
-  const [sort, setSort] = useState('featured');
+  const [sortBy, setSortBy] = useState('featured');
 
   const filtered = useMemo(() => {
-    let result = search ? searchProducts(search) : [...products];
+    let result = activeCat === 'all'
+      ? products
+      : products.filter(p => p.category === activeCat);
 
-    if (activeCat !== 'all') {
-      result = result.filter(p => p.category === activeCat);
+    if (search.trim()) {
+      const matches = searchProducts(search);
+      const matchIds = new Set(matches.map(m => m.id));
+      result = result.filter(p => matchIds.has(p.id));
     }
 
-    switch (sort) {
-      case 'price-low': result.sort((a, b) => a.price - b.price); break;
-      case 'price-high': result.sort((a, b) => b.price - a.price); break;
-      case 'name': result.sort((a, b) => a.name.localeCompare(b.name)); break;
-      default: break; // 'featured' = default order
-    }
+    if (sortBy === 'price-asc') result = [...result].sort((a, b) => a.price - b.price);
+    if (sortBy === 'price-desc') result = [...result].sort((a, b) => b.price - a.price);
+    if (sortBy === 'name') result = [...result].sort((a, b) => a.name.localeCompare(b.name));
 
     return result;
-  }, [search, activeCat, sort]);
+  }, [activeCat, search, sortBy]);
 
-  const handleCatChange = (catId) => {
+  const handleCatChange = useCallback((catId) => {
     setActiveCat(catId);
+    const params = new URLSearchParams(searchParams.toString());
     if (catId === 'all') {
-      searchParams.delete('cat');
+      params.delete('cat');
     } else {
-      searchParams.set('cat', catId);
+      params.set('cat', catId);
     }
-    setSearchParams(searchParams);
-  };
+    const qs = params.toString();
+    router.push(qs ? `${pathname}?${qs}` : pathname);
+  }, [searchParams, router, pathname]);
 
   return (
     <main>
@@ -65,14 +71,14 @@ export default function Explore() {
           </div>
           <select
             className="select"
-            value={sort}
-            onChange={e => setSort(e.target.value)}
+            value={sortBy}
+            onChange={e => setSortBy(e.target.value)}
             aria-label="Sort products"
             style={{ width: 'auto', minWidth: '160px' }}
           >
             <option value="featured">Featured</option>
-            <option value="price-low">Price: Low → High</option>
-            <option value="price-high">Price: High → Low</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
             <option value="name">Name A–Z</option>
           </select>
         </div>

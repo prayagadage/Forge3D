@@ -1,5 +1,5 @@
 import { useCart } from '../../context/CartContext';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 export default function CartDrawer() {
   const { items, isOpen, setIsOpen, removeItem, updateQuantity, itemCount, cartTotal } = useCart();

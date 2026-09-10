@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+'use client';
+import Link from 'next/link';
 
 export default function OrderConfirmation() {
   const orderId = `FRG-${Date.now().toString(36).toUpperCase()}`;

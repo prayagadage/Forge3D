@@ -1,3 +1,4 @@
+'use client';
 import { useState, useCallback } from 'react';
 import { materials, colors as allColors, uploadFormats } from '../data/products';
 

@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+'use client';
+import Link from 'next/link';
 import ProductCard from '../components/product/ProductCard';
 import { TickerStrip } from '../components/layout/Footer';
 import { products, categories } from '../data/products';

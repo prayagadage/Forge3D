@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 function TickerStrip({ variant = '' }) {
   const items = ['PLA+', 'PETG', 'ABS', 'TPU FLEX', 'HIGH-DETAIL RESIN', 'SILK & DUAL-TONE'];

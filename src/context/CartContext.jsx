@@ -1,3 +1,4 @@
+'use client';
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const CartContext = createContext();
@@ -5,6 +6,7 @@ const CartContext = createContext();
 const STORAGE_KEY = '3dp_cart';
 
 function loadCart() {
+  if (typeof window === 'undefined') return [];
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : [];
@@ -14,12 +16,19 @@ function loadCart() {
 }
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState(loadCart);
+  const [items, setItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [toast, setToast] = useState(null);
 
+  // ponytail: hydrate cart from localStorage only on client
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    setItems(loadCart());
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    }
   }, [items]);
 
   const showToast = useCallback((message) => {

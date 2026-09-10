@@ -1,10 +1,12 @@
+'use client';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 
 export default function Checkout() {
   const { items, cartTotal, clearCart, itemCount } = useCart();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [form, setForm] = useState({
     email: '', firstName: '', lastName: '',
     address: '', apartment: '', city: '',
@@ -55,7 +57,7 @@ export default function Checkout() {
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setProcessing(true);
     // ponytail: simulate order — replace with real payment + API
-    setTimeout(() => { clearCart(); navigate('/order-confirmation'); }, 1500);
+    setTimeout(() => { clearCart(); router.push('/order-confirmation'); }, 1500);
   };
 
   const renderField = (name, label, opts = {}) => (

@@ -1,10 +1,12 @@
-import { Link, useLocation } from 'react-router-dom';
+'use client';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 
 export default function Navbar() {
   const { itemCount, setIsOpen } = useCart();
-  const { pathname } = useLocation();
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const links = [
