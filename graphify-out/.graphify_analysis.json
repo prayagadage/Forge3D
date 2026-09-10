@@ -1,0 +1,274 @@
+{
+  "communities": {
+    "0": [
+      "src_app",
+      "src_app_applayout",
+      "src_app_scrolltotop",
+      "src_app_toast",
+      "src_components_cart_cartdrawer",
+      "src_components_cart_cartdrawer_cartdrawer",
+      "src_components_layout_navbar",
+      "src_components_layout_navbar_navbar",
+      "src_context_cartcontext",
+      "src_context_cartcontext_cartcontext",
+      "src_context_cartcontext_cartprovider",
+      "src_context_cartcontext_loadcart",
+      "src_context_cartcontext_usecart",
+      "src_pages_about",
+      "src_pages_about_about",
+      "src_pages_about_machines",
+      "src_pages_about_processes",
+      "src_pages_checkout",
+      "src_pages_checkout_checkout",
+      "src_pages_orderconfirmation",
+      "src_pages_orderconfirmation_orderconfirmation"
+    ],
+    "1": [
+      "src_data_products",
+      "src_data_products_categories",
+      "src_data_products_colors",
+      "src_data_products_getproductbyslug",
+      "src_data_products_getproductsbycategory",
+      "src_data_products_infilloptions",
+      "src_data_products_materials",
+      "src_data_products_printqualities",
+      "src_data_products_products",
+      "src_data_products_searchproducts",
+      "src_data_products_uploadformats",
+      "src_pages_customprint",
+      "src_pages_customprint_customprint",
+      "src_pages_customprint_filamentcolors",
+      "src_pages_customprint_layeroptions",
+      "src_pages_customprint_materialpricing",
+      "src_pages_explore",
+      "src_pages_explore_explore",
+      "src_pages_productdetail",
+      "src_pages_productdetail_productdetail"
+    ],
+    "2": [
+      "src_components_layout_footer",
+      "src_components_layout_footer_footer",
+      "src_components_layout_footer_tickerstrip",
+      "src_components_product_productcard",
+      "src_components_product_productcard_chevrondown",
+      "src_components_product_productcard_eyeicon",
+      "src_components_product_productcard_productcard",
+      "src_pages_home",
+      "src_pages_home_arrow",
+      "src_pages_home_calculator",
+      "src_pages_home_fileup",
+      "src_pages_home_headphones",
+      "src_pages_home_home",
+      "src_pages_home_palette",
+      "src_pages_home_printer",
+      "src_pages_home_target",
+      "src_pages_home_truck",
+      "src_pages_home_upload",
+      "src_pages_home_zap"
+    ],
+    "3": [
+      "package",
+      "package_dependencies",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_dependencies_react_router_dom",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_lint",
+      "package_scripts_preview",
+      "package_type",
+      "package_version",
+      "react",
+      "react_dom",
+      "react_router_dom"
+    ],
+    "4": [
+      "oxlintrc_plugins",
+      "ref_oxc",
+      "ref_react",
+      "src_app_app",
+      "src_main",
+      "src_pages_getquote",
+      "src_pages_getquote_getquote",
+      "src_pages_getquote_projecttypes",
+      "src_pages_materialguide",
+      "src_pages_materialguide_materialguide",
+      "src_pages_materialguide_materialsdata",
+      "src_pages_materialguide_statbar",
+      "src_pages_materialguide_statlabels"
+    ],
+    "5": [
+      "oxlint",
+      "package_devdependencies",
+      "package_devdependencies_oxlint",
+      "package_devdependencies_types_react",
+      "package_devdependencies_types_react_dom",
+      "package_devdependencies_vite",
+      "package_devdependencies_vitejs_plugin_react",
+      "types_react",
+      "types_react_dom",
+      "vite",
+      "vitejs_plugin_react"
+    ],
+    "6": [
+      "oxlintrc",
+      "oxlintrc_rules",
+      "oxlintrc_rules_react_only_export_components",
+      "oxlintrc_rules_react_rules_of_hooks",
+      "oxlintrc_schema",
+      "ref_warn"
+    ],
+    "7": [
+      "vite_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.18095238095238095,
+    "1": 0.15263157894736842,
+    "2": 0.11695906432748537,
+    "3": 0.11764705882352941,
+    "4": 0.15384615384615385,
+    "5": 0.18181818181818182,
+    "6": 0.3333333333333333,
+    "7": 1.0
+  },
+  "gods": [
+    {
+      "id": "src_context_cartcontext_usecart",
+      "label": "useCart()",
+      "degree": 11
+    },
+    {
+      "id": "ref_react",
+      "label": "react",
+      "degree": 10
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 5
+    },
+    {
+      "id": "src_pages_productdetail_productdetail",
+      "label": "ProductDetail()",
+      "degree": 4
+    },
+    {
+      "id": "oxlintrc_plugins",
+      "label": "plugins",
+      "degree": 3
+    },
+    {
+      "id": "oxlintrc_rules",
+      "label": "rules",
+      "degree": 3
+    },
+    {
+      "id": "src_components_cart_cartdrawer_cartdrawer",
+      "label": "CartDrawer()",
+      "degree": 3
+    },
+    {
+      "id": "src_components_layout_navbar_navbar",
+      "label": "Navbar()",
+      "degree": 3
+    },
+    {
+      "id": "src_components_product_productcard_productcard",
+      "label": "ProductCard()",
+      "degree": 3
+    },
+    {
+      "id": "src_context_cartcontext_cartprovider",
+      "label": "CartProvider()",
+      "degree": 3
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Toast()",
+      "target": "useCart()",
+      "source_files": [
+        "src/App.jsx",
+        "src/context/CartContext.jsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `Toast()` unexpectedly reaches hub `useCart()`"
+    },
+    {
+      "source": "ProductDetail()",
+      "target": "useCart()",
+      "source_files": [
+        "src/pages/ProductDetail.jsx",
+        "src/context/CartContext.jsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "CartDrawer()",
+      "target": "useCart()",
+      "source_files": [
+        "src/components/cart/CartDrawer.jsx",
+        "src/context/CartContext.jsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "Navbar()",
+      "target": "useCart()",
+      "source_files": [
+        "src/components/layout/Navbar.jsx",
+        "src/context/CartContext.jsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "Checkout()",
+      "target": "useCart()",
+      "source_files": [
+        "src/pages/Checkout.jsx",
+        "src/context/CartContext.jsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `react` connect `react` to `App.jsx`, `products.js`?",
+      "why": "High betweenness centrality (0.120) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `plugins` connect `react` to `.oxlintrc.json`?",
+      "why": "High betweenness centrality (0.089) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `$schema`, `oxc`, `react/rules-of-hooks` to the rest of the system?",
+      "why": "31 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Home.jsx` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.11695906432748537 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `package.json` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.11764705882352941 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

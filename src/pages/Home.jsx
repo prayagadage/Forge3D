@@ -203,52 +203,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ===== WHY US ===== */}
-      <section className="section section--lavender">
-        <div className="container">
-          <div className="section-header">
-            <p className="section-header__label">Why Forge3D</p>
-            <h2 className="section-header__title">Quality you can feel</h2>
-          </div>
-          <div className="features">
-            <div className="feature">
-              <div className="feature__icon"><Zap /></div>
-              <h3 className="feature__title">Fast Turnaround</h3>
-              <p className="feature__desc">Most orders ship within 3–5 business days. Rush options available.</p>
-            </div>
-            <div className="feature">
-              <div className="feature__icon"><Target /></div>
-              <h3 className="feature__title">Precision Printing</h3>
-              <p className="feature__desc">Layer resolution as fine as 0.05mm for incredible detail.</p>
-            </div>
-            <div className="feature">
-              <div className="feature__icon"><Palette /></div>
-              <h3 className="feature__title">Material Variety</h3>
-              <p className="feature__desc">PLA, ABS, PETG, TPU, and resin — each suited for different needs.</p>
-            </div>
-            <div className="feature">
-              <div className="feature__icon"><Headphones /></div>
-              <h3 className="feature__title">Expert Support</h3>
-              <p className="feature__desc">We review every order and reach out if we spot any issues.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ===== CTA ===== */}
-      <section className="section">
-        <div className="container">
-          <div className="cta-banner">
-            <h2 className="cta-banner__title">Have a 3D model ready?</h2>
-            <p className="cta-banner__desc">
-              Upload your design and get an instant quote. We support STL, OBJ, 3MF, and STEP files.
-            </p>
-            <Link to="/custom-print" className="btn btn--primary btn--lg">
-              Upload & Get a Quote
-            </Link>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }
