@@ -318,31 +318,8 @@
       "why": "peripheral node `ProductDetail()` unexpectedly reaches hub `useCart()`"
     }
   ],
-  "questions": [
-    {
-      "type": "bridge_node",
-      "question": "Why does `react` connect `react` to `views/Home.jsx`, `views/CustomPrint.jsx`, `layout.jsx`?",
-      "why": "High betweenness centrality (0.156) - this node is a cross-community bridge."
-    },
-    {
-      "type": "bridge_node",
-      "question": "Why does `plugins` connect `react` to `.oxlintrc.json`?",
-      "why": "High betweenness centrality (0.041) - this node is a cross-community bridge."
-    },
-    {
-      "type": "isolated_nodes",
-      "question": "What connects `$schema`, `oxc`, `react/rules-of-hooks` to the rest of the system?",
-      "why": "41 weakly-connected nodes found - possible documentation gaps or missing edges."
-    },
-    {
-      "type": "low_cohesion",
-      "question": "Should `views/Home.jsx` be split into smaller, more focused modules?",
-      "why": "Cohesion score 0.10952380952380952 - nodes in this community are weakly interconnected."
-    },
-    {
-      "type": "low_cohesion",
-      "question": "Should `package.json` be split into smaller, more focused modules?",
-      "why": "Cohesion score 0.11764705882352941 - nodes in this community are weakly interconnected."
-    }
-  ]
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
 }

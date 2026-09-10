@@ -4,8 +4,11 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 
+import { SignInButton, UserButton, useAuth } from '@clerk/nextjs';
+
 export default function Navbar() {
   const { itemCount, setIsOpen } = useCart();
+  const { isSignedIn } = useAuth();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -36,11 +39,17 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="navbar__actions">
-            <button className="navbar__cart-btn" onClick={() => setIsOpen(true)} aria-label={`Shopping cart with ${itemCount} items`}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
-              {itemCount > 0 && <span className="navbar__cart-count">{itemCount}</span>}
-            </button>
+          <div className="navbar__actions" style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-4)' }}>
+            {!isSignedIn ? (
+              <SignInButton mode="modal">
+                <button className="btn-brutalist-white" style={{ padding: '0.4rem 1rem', fontSize: '0.875rem' }}>Login</button>
+              </SignInButton>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', marginTop: '4px' }}>
+                <UserButton afterSignOutUrl="/" />
+              </div>
+            )}
+            
             <button className="navbar__order-btn" onClick={() => setIsOpen(true)}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
               <span>Order</span>
