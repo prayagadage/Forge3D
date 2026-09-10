@@ -10,7 +10,7 @@ export default function Navbar() {
   const links = [
     { to: '/explore', label: 'Shop' },
     { to: '/custom-print', label: 'Custom Print' },
-    { to: '/explore?cat=desk', label: 'Material Guide' },
+    { to: '/materials', label: 'Material Guide' },
     { to: '/checkout', label: 'Get a Quote' },
   ];
 
