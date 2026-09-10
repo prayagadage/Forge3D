@@ -168,16 +168,16 @@ export default function Home() {
       </section>
 
       {/* ===== SECTION 03: MANIFESTO ===== */}
-      <section className="section">
+      <section className="section" style={{ borderTop: '2px solid var(--navy-900)', background: '#FAFAFA' }}>
         <div className="container">
-          <div className="section-label">
-            <span className="section-label__num">03</span>
-            <span className="section-label__text">The Forge3D Manifesto</span>
-          </div>
           <div className="manifesto">
             <div>
+              <div className="section-label">
+                <span className="section-label__num">03</span>
+                <span className="section-label__text">The Forge3D Manifesto</span>
+              </div>
               <p className="manifesto__quote">
-                "Every sketch deserves a <span className="highlight">third dimension</span>. We obsess over layers so you can obsess over ideas."
+                "Every sketch deserves a <span className="highlight-orange-box">third</span><br/><span className="highlight-orange-box">dimension</span> . We obsess over<br/>layers so you can obsess over<br/>ideas."
               </p>
               <p className="manifesto__attribution">— The Forge3D Lab, Bengaluru</p>
               <div className="manifesto__chips">
@@ -188,12 +188,20 @@ export default function Home() {
                 <span className="manifesto__chip">RESIN</span>
               </div>
             </div>
-            <div className="manifesto__image">
+            <div className="manifesto__image-card">
               <img src="/images/hero.jpg" alt="Forge3D Lab" />
             </div>
           </div>
         </div>
       </section>
+
+      {/* ===== ORANGE MARQUEE ===== */}
+      <div className="scrolling-marquee">
+        <div className="scrolling-marquee__track">
+          <span>+ 0.05MM LAYER ACCURACY + PRECISION 3D PRINTING + CUSTOM PROTOTYPING + PAN-INDIA SHIPPING + HIGH-DETAIL RESIN </span>
+          <span>+ 0.05MM LAYER ACCURACY + PRECISION 3D PRINTING + CUSTOM PROTOTYPING + PAN-INDIA SHIPPING + HIGH-DETAIL RESIN </span>
+        </div>
+      </div>
 
       {/* ===== WHY US ===== */}
       <section className="section section--lavender">
