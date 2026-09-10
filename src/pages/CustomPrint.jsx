@@ -1,30 +1,59 @@
 import { useState, useCallback } from 'react';
-import { useCart } from '../context/CartContext';
-import { materials, colors as allColors, printQualities, infillOptions, uploadFormats } from '../data/products';
+import { materials, colors as allColors, uploadFormats } from '../data/products';
 
-const STEPS = ['Upload', 'Configure', 'Review'];
+const materialPricing = [
+  { id: 'pla', name: 'PLA+', price: 12, desc: 'Crisp detail, everyday parts' },
+  { id: 'petg', name: 'PETG', price: 14, desc: 'Tough, weather-friendly' },
+  { id: 'abs', name: 'ABS', price: 15, desc: 'Heat resistant, engineering' },
+  { id: 'tpu', name: 'TPU Flex', price: 22, desc: 'Rubbery, bendable' },
+  { id: 'resin', name: 'Resin', price: 35, desc: 'Ultra-fine 0.05mm detail' },
+];
+
+const layerOptions = [
+  { id: '0.30', label: '0.30mm · Draft' },
+  { id: '0.20', label: '0.20mm · Standard' },
+  { id: '0.12', label: '0.12mm · Fine' },
+  { id: '0.05', label: '0.05mm · Ultra' },
+];
+
+const filamentColors = [
+  { id: 'charcoal', name: 'Charcoal', hex: '#2D2D2D' },
+  { id: 'white', name: 'White', hex: '#F5F5F5' },
+  { id: 'orange', name: 'Orange', hex: '#F97316' },
+  { id: 'purple', name: 'Purple', hex: '#7C3AED' },
+  { id: 'green', name: 'Green', hex: '#22C55E' },
+  { id: 'cyan', name: 'Cyan', hex: '#06B6D4' },
+  { id: 'pink', name: 'Pink', hex: '#EC4899' },
+  { id: 'gold', name: 'Gold', hex: '#D4A574' },
+];
 
 export default function CustomPrint() {
-  const { addItem } = useCart();
-  const [step, setStep] = useState(0);
   const [file, setFile] = useState(null);
+  const [dragging, setDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [dragging, setDragging] = useState(false);
 
   const [material, setMaterial] = useState('pla');
-  const [color, setColor] = useState('white');
-  const [quality, setQuality] = useState('standard');
-  const [infill, setInfill] = useState('standard');
+  const [infill, setInfill] = useState(20);
+  const [layer, setLayer] = useState('0.20');
+  const [color, setColor] = useState('charcoal');
   const [quantity, setQuantity] = useState(1);
-  const [notes, setNotes] = useState('');
 
-  const basePrice = 15.00;
-  const materialMult = material === 'resin' ? 2.5 : material === 'tpu' ? 1.6 : material === 'abs' ? 1.2 : material === 'petg' ? 1.3 : 1;
-  const qualityMult = printQualities.find(q => q.id === quality)?.multiplier || 1;
-  const infillMult = infillOptions.find(i => i.id === infill)?.multiplier || 1;
-  const unitPrice = Math.round(basePrice * materialMult * qualityMult * infillMult * 100) / 100;
-  const totalPrice = Math.round(unitPrice * quantity * 100) / 100;
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [notes, setNotes] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  // Live estimate calculation
+  const mat = materialPricing.find(m => m.id === material);
+  const baseWeight = 200; // grams (simulated)
+  const infillMult = 0.5 + (infill / 100) * 1.5;
+  const layerMult = layer === '0.05' ? 2.2 : layer === '0.12' ? 1.5 : layer === '0.20' ? 1 : 0.8;
+  const estimatedPrice = Math.round(baseWeight * (mat?.price || 12) / 100 * infillMult * layerMult * quantity);
+  const estPrintTime = Math.round(baseWeight * 0.55 * layerMult * quantity * 10) / 10;
+
+  const selectedColor = filamentColors.find(c => c.id === color);
 
   const handleFile = useCallback((f) => {
     const ext = '.' + f.name.split('.').pop().toUpperCase();
@@ -34,17 +63,10 @@ export default function CustomPrint() {
     }
     setUploading(true);
     setUploadProgress(0);
-    // ponytail: simulate upload — replace with real upload
     let p = 0;
     const interval = setInterval(() => {
       p += Math.random() * 30;
-      if (p >= 100) {
-        p = 100;
-        clearInterval(interval);
-        setUploading(false);
-        setFile(f);
-        setStep(1);
-      }
+      if (p >= 100) { p = 100; clearInterval(interval); setUploading(false); setFile(f); }
       setUploadProgress(Math.min(p, 100));
     }, 200);
   }, []);
@@ -56,224 +78,207 @@ export default function CustomPrint() {
     if (f) handleFile(f);
   }, [handleFile]);
 
-  const handleFileInput = (e) => {
-    const f = e.target.files[0];
-    if (f) handleFile(f);
+  const handleSubmit = () => {
+    if (!name.trim() || !email.trim()) return;
+    setSubmitted(true);
+    // ponytail: simulate — replace with real API
+    setTimeout(() => setSubmitted(false), 3000);
   };
-
-  const handleAddToCart = () => {
-    const customProduct = {
-      id: `custom-${Date.now()}`,
-      name: `Custom Print: ${file.name}`,
-      price: unitPrice,
-      category: 'custom',
-      image: null,
-    };
-    addItem(customProduct, {
-      material: materials.find(m => m.id === material)?.name,
-      color: allColors.find(c => c.id === color)?.name,
-      quality: printQualities.find(q => q.id === quality)?.name,
-      infill: infillOptions.find(i => i.id === infill)?.name,
-    }, quantity);
-    setFile(null);
-    setStep(0);
-    setQuantity(1);
-    setNotes('');
-  };
-
-  const formatFileSize = (bytes) => {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / 1048576).toFixed(1) + ' MB';
-  };
-
-  const selectedMaterial = materials.find(m => m.id === material);
-  const selectedColor = allColors.find(c => c.id === color);
 
   return (
     <main>
       <div className="container" style={{ paddingBottom: 'var(--sp-16)' }}>
-        <div className="page-header">
-          <h1 className="page-header__title">Custom Print</h1>
-          <p className="page-header__desc">Upload your 3D model and we'll print it for you.</p>
+        {/* Header */}
+        <div style={{ padding: 'var(--sp-8) 0 var(--sp-6)' }}>
+          <div className="section-label">
+            <span className="section-label__num">02</span>
+            <span className="section-label__text">Custom Print Lab</span>
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fs-h1)', fontWeight: 'var(--fw-bold)', marginBottom: 'var(--sp-3)' }}>
+            Print your own model
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '460px', lineHeight: 'var(--lh-relaxed)' }}>
+            Drop your 3D file, dial in the specs, and watch the estimate react. The request — with your file — lands straight in the owner's inbox.
+          </p>
         </div>
 
-        {/* Stepper */}
-        <div className="stepper" role="navigation" aria-label="Upload steps">
-          {STEPS.map((s, i) => (
-            <div className="stepper__step" key={s} style={{ flex: i < STEPS.length - 1 ? 1 : 'none', display: 'flex', alignItems: 'center', gap: 'var(--sp-3)' }}>
-              <span className={`stepper__dot ${i === step ? 'stepper__dot--active' : i < step ? 'stepper__dot--done' : ''}`}>
-                {i < step ? (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                ) : i + 1}
+        {/* Two-column layout */}
+        <div className="custom-print-layout">
+          {/* LEFT: Upload + Config */}
+          <div className="custom-print-config">
+            {/* Upload Zone */}
+            {!file && !uploading && (
+              <div
+                className={`upload-zone ${dragging ? 'upload-zone--dragging' : ''}`}
+                onDragOver={e => { e.preventDefault(); setDragging(true); }}
+                onDragLeave={() => setDragging(false)}
+                onDrop={handleDrop}
+                onClick={() => document.getElementById('file-input').click()}
+                role="button"
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter') document.getElementById('file-input').click(); }}
+              >
+                <div className="upload-zone__icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary-accent)" strokeWidth="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <h2 className="upload-zone__title">Drag & drop your 3D file</h2>
+                <p className="upload-zone__formats">.STL · .OBJ · .3MF · .STEP — UP TO 100 MB</p>
+                <input id="file-input" type="file" accept=".stl,.obj,.3mf,.step,.stp" onChange={e => { if (e.target.files[0]) handleFile(e.target.files[0]); }} style={{ display: 'none' }} />
+              </div>
+            )}
+
+            {uploading && (
+              <div className="upload-progress" style={{ padding: 'var(--sp-16) 0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-caption)' }}>
+                  <span>Uploading...</span>
+                  <span>{Math.round(uploadProgress)}%</span>
+                </div>
+                <div className="upload-progress__bar-wrap">
+                  <div className="upload-progress__bar" style={{ width: `${uploadProgress}%` }} />
+                </div>
+              </div>
+            )}
+
+            {file && (
+              <div className="file-info" style={{ marginBottom: 'var(--sp-4)' }}>
+                <div className="file-info__icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-accent)" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div className="file-info__details">
+                  <div className="file-info__name">{file.name}</div>
+                  <div className="file-info__meta"><span>{(file.size / 1048576).toFixed(1)} MB</span></div>
+                </div>
+                <button className="file-info__remove" onClick={() => setFile(null)} aria-label="Remove file">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+            )}
+
+            {/* Material Selection */}
+            <div className="config-section">
+              <label className="config-section__label">Material</label>
+              <div className="material-grid">
+                {materialPricing.map(m => (
+                  <button
+                    key={m.id}
+                    className={`material-card ${material === m.id ? 'material-card--active' : ''}`}
+                    onClick={() => setMaterial(m.id)}
+                  >
+                    <div className="material-card__top">
+                      <span className="material-card__name">{m.name}</span>
+                      <span className="material-card__price">₹{m.price}/g</span>
+                    </div>
+                    <span className="material-card__desc">{m.desc}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Infill Density */}
+            <div className="config-section">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label className="config-section__label" style={{ marginBottom: 0 }}>Infill Density</label>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-small)', color: 'var(--primary-accent)', fontWeight: 'var(--fw-medium)' }}>{infill}%</span>
+              </div>
+              <input
+                type="range"
+                min="5" max="100" step="5"
+                value={infill}
+                onChange={e => setInfill(Number(e.target.value))}
+                className="infill-slider"
+              />
+            </div>
+
+            {/* Layer Height + Quantity row */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-6)' }}>
+              <div className="config-section">
+                <label className="config-section__label">Layer Height</label>
+                <select className="select" value={layer} onChange={e => setLayer(e.target.value)} style={{ borderRadius: 'var(--radius-lg)' }}>
+                  {layerOptions.map(l => <option key={l.id} value={l.id}>{l.label}</option>)}
+                </select>
+              </div>
+              <div className="config-section">
+                <label className="config-section__label">Quantity</label>
+                <div className="quantity-control" style={{ width: '100%', justifyContent: 'space-between' }}>
+                  <button className="quantity-control__btn" onClick={() => setQuantity(Math.max(1, quantity - 1))}>−</button>
+                  <input className="quantity-control__value" type="text" value={quantity} readOnly style={{ flex: 1 }} />
+                  <button className="quantity-control__btn" onClick={() => setQuantity(quantity + 1)}>+</button>
+                </div>
+              </div>
+            </div>
+
+            {/* Filament Colour */}
+            <div className="config-section">
+              <label className="config-section__label">Filament Colour</label>
+              <div className="color-swatches">
+                {filamentColors.map(c => (
+                  <button
+                    key={c.id}
+                    className={`color-swatch ${color === c.id ? 'color-swatch--active' : ''}`}
+                    style={{ background: c.hex, width: 40, height: 40 }}
+                    onClick={() => setColor(c.id)}
+                    aria-label={c.name}
+                    title={c.name}
+                  />
+                ))}
+              </div>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-caption)', color: 'var(--text-secondary)', marginTop: 'var(--sp-2)', display: 'block' }}>
+                {selectedColor?.name}
               </span>
-              <span className={`stepper__label ${i === step ? 'stepper__label--active' : ''}`}>{s}</span>
-              {i < STEPS.length - 1 && (
-                <span className={`stepper__line ${i < step ? 'stepper__line--done' : ''}`} />
-              )}
             </div>
-          ))}
+          </div>
+
+          {/* RIGHT: Live Estimate + Contact */}
+          <div className="custom-print-sidebar">
+            {/* Live Estimate Card */}
+            <div className="estimate-card">
+              <div className="estimate-card__label">Live Estimate</div>
+              <div className="estimate-card__price">₹{estimatedPrice.toLocaleString()}</div>
+              <div className="estimate-card__specs">
+                <div className="estimate-card__spec">
+                  <span>Est. weight</span>
+                  <span>{Math.round(baseWeight * infillMult)}g</span>
+                </div>
+                <div className="estimate-card__spec">
+                  <span>Est. print time</span>
+                  <span>{estPrintTime}h</span>
+                </div>
+                <div className="estimate-card__spec">
+                  <span>Material</span>
+                  <span>{mat?.name} · {selectedColor?.name}</span>
+                </div>
+                <div className="estimate-card__spec">
+                  <span>Setup fee</span>
+                  <span>₹99 included</span>
+                </div>
+              </div>
+              <p className="estimate-card__disclaimer">
+                Final quote is confirmed by the owner after checking your file's geometry.
+              </p>
+            </div>
+
+            {/* Contact Form */}
+            <div className="contact-card">
+              <label className="config-section__label">Your Details</label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)', marginTop: 'var(--sp-3)' }}>
+                <input className="input" placeholder="Your name" value={name} onChange={e => setName(e.target.value)} />
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-3)' }}>
+                  <input className="input" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+                  <input className="input" type="tel" placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
+                </div>
+                <textarea className="input" rows="3" placeholder="Notes — deadlines, post-processing, anything..." value={notes} onChange={e => setNotes(e.target.value)} style={{ resize: 'vertical' }} />
+                <button className="btn btn--primary btn--lg btn--full" onClick={handleSubmit} disabled={submitted}>
+                  {submitted ? 'Request Sent!' : (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                      Send print request to owner
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Step 0: Upload */}
-        {step === 0 && !uploading && (
-          <div
-            className={`upload-zone ${dragging ? 'upload-zone--dragging' : ''}`}
-            onDragOver={e => { e.preventDefault(); setDragging(true); }}
-            onDragLeave={() => setDragging(false)}
-            onDrop={handleDrop}
-            onClick={() => document.getElementById('file-input').click()}
-            role="button"
-            tabIndex={0}
-            aria-label="Upload your 3D model"
-            onKeyDown={e => { if (e.key === 'Enter') document.getElementById('file-input').click(); }}
-          >
-            <div className="upload-zone__icon">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary-accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
-              </svg>
-            </div>
-            <h2 className="upload-zone__title">Upload your 3D model</h2>
-            <p className="upload-zone__desc">Drag and drop your file here, or click to browse</p>
-            <p className="upload-zone__formats">Supported formats: {uploadFormats.join(', ')} · Max 50 MB</p>
-            <input id="file-input" type="file" accept=".stl,.obj,.3mf,.step,.stp" onChange={handleFileInput} style={{ display: 'none' }} aria-hidden="true" />
-          </div>
-        )}
-
-        {/* Uploading */}
-        {uploading && (
-          <div className="upload-progress">
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--fs-small)' }}>
-              <span>Uploading...</span>
-              <span>{Math.round(uploadProgress)}%</span>
-            </div>
-            <div className="upload-progress__bar-wrap">
-              <div className="upload-progress__bar" style={{ width: `${uploadProgress}%` }} />
-            </div>
-          </div>
-        )}
-
-        {/* Step 1: Configure */}
-        {step === 1 && file && (
-          <div>
-            <div className="file-info" style={{ marginBottom: 'var(--sp-8)' }}>
-              <div className="file-info__icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary-accent)" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              </div>
-              <div className="file-info__details">
-                <div className="file-info__name">{file.name}</div>
-                <div className="file-info__meta">
-                  <span>{formatFileSize(file.size)}</span>
-                  <span>·</span>
-                  <span>{file.name.split('.').pop().toUpperCase()}</span>
-                </div>
-              </div>
-              <button className="file-info__remove" onClick={() => { setFile(null); setStep(0); }} aria-label="Remove file">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            </div>
-
-            <h2 style={{ fontSize: 'var(--fs-h3)', fontWeight: 'var(--fw-semibold)', marginBottom: 'var(--sp-6)' }}>
-              Choose how you want it printed
-            </h2>
-
-            <div className="config-panel">
-              <div className="input-group">
-                <label htmlFor="material">Material</label>
-                <select id="material" className="select" value={material} onChange={e => setMaterial(e.target.value)}>
-                  {materials.map(m => <option key={m.id} value={m.id}>{m.name} — {m.desc}</option>)}
-                </select>
-              </div>
-
-              <div className="input-group">
-                <label>Color — {selectedColor?.name}</label>
-                <div className="color-swatches">
-                  {allColors.map(c => (
-                    <button key={c.id} className={`color-swatch ${color === c.id ? 'color-swatch--active' : ''}`} style={{ background: c.hex }} onClick={() => setColor(c.id)} aria-label={c.name} title={c.name} />
-                  ))}
-                </div>
-              </div>
-
-              <div className="input-group">
-                <label htmlFor="quality">Print Quality</label>
-                <select id="quality" className="select" value={quality} onChange={e => setQuality(e.target.value)}>
-                  {printQualities.map(q => <option key={q.id} value={q.id}>{q.name} — {q.desc}</option>)}
-                </select>
-              </div>
-
-              <div className="input-group">
-                <label htmlFor="infill">
-                  Strength
-                  <span style={{ fontWeight: 'var(--fw-regular)', color: 'var(--text-tertiary)', marginLeft: '4px', fontSize: 'var(--fs-caption)' }}>(how solid the print is)</span>
-                </label>
-                <select id="infill" className="select" value={infill} onChange={e => setInfill(e.target.value)}>
-                  {infillOptions.map(i => <option key={i.id} value={i.id}>{i.name} — {i.desc}</option>)}
-                </select>
-              </div>
-            </div>
-
-            <div style={{ marginTop: 'var(--sp-6)' }}>
-              <label className="option-group__label" style={{ display: 'block', marginBottom: 'var(--sp-3)', fontSize: 'var(--fs-small)', fontWeight: 600 }}>Quantity</label>
-              <div className="quantity-control">
-                <button className="quantity-control__btn" onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Decrease">−</button>
-                <input className="quantity-control__value" type="text" value={quantity} readOnly aria-label="Quantity" />
-                <button className="quantity-control__btn" onClick={() => setQuantity(quantity + 1)} aria-label="Increase">+</button>
-              </div>
-            </div>
-
-            <div className="input-group" style={{ marginTop: 'var(--sp-6)' }}>
-              <label htmlFor="notes">Special instructions (optional)</label>
-              <textarea id="notes" className="input" rows="3" placeholder="Any specific requirements for your print..." value={notes} onChange={e => setNotes(e.target.value)} style={{ resize: 'vertical' }} />
-            </div>
-
-            <div style={{ display: 'flex', gap: 'var(--sp-4)', marginTop: 'var(--sp-8)', justifyContent: 'flex-end' }}>
-              <button className="btn btn--secondary" onClick={() => { setFile(null); setStep(0); }}>Start Over</button>
-              <button className="btn btn--primary btn--lg" onClick={() => setStep(2)}>Review & Price →</button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Review */}
-        {step === 2 && file && (
-          <div style={{ maxWidth: '640px' }}>
-            <h2 style={{ fontSize: 'var(--fs-h3)', fontWeight: 'var(--fw-semibold)', marginBottom: 'var(--sp-6)' }}>Review your order</h2>
-
-            <div className="file-info" style={{ marginBottom: 'var(--sp-6)' }}>
-              <div className="file-info__icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary-accent)" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              </div>
-              <div className="file-info__details">
-                <div className="file-info__name">{file.name}</div>
-                <div className="file-info__meta"><span>{formatFileSize(file.size)}</span></div>
-              </div>
-            </div>
-
-            <div className="price-summary" style={{ marginBottom: 'var(--sp-6)' }}>
-              <div className="price-summary__row"><span>Material</span><span>{selectedMaterial?.name}</span></div>
-              <div className="price-summary__row">
-                <span>Color</span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: selectedColor?.hex, display: 'inline-block', border: '1px solid var(--border)' }} />
-                  {selectedColor?.name}
-                </span>
-              </div>
-              <div className="price-summary__row"><span>Quality</span><span>{printQualities.find(q => q.id === quality)?.name}</span></div>
-              <div className="price-summary__row"><span>Strength</span><span>{infillOptions.find(i => i.id === infill)?.name}</span></div>
-              <div className="price-summary__row"><span>Quantity</span><span>×{quantity}</span></div>
-              {quantity > 1 && <div className="price-summary__row"><span>Unit price</span><span>${unitPrice.toFixed(2)}</span></div>}
-              <div className="price-summary__total"><span>Estimated Total</span><span>${totalPrice.toFixed(2)}</span></div>
-            </div>
-
-            <p style={{ fontSize: 'var(--fs-caption)', color: 'var(--text-tertiary)', marginBottom: 'var(--sp-6)' }}>
-              * Final price may vary based on model complexity and size. We'll confirm the exact price before printing.
-            </p>
-
-            <div style={{ display: 'flex', gap: 'var(--sp-4)' }}>
-              <button className="btn btn--secondary" onClick={() => setStep(1)}>← Back</button>
-              <button className="btn btn--primary btn--lg" onClick={handleAddToCart} style={{ flex: 1 }}>Add to Cart — ${totalPrice.toFixed(2)}</button>
-            </div>
-          </div>
-        )}
       </div>
     </main>
   );
