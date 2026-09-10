@@ -25,7 +25,6 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer__accent-bar" />
-      <TickerStrip variant="ticker--dark" />
 
       <div className="container">
         <div className="footer__inner">
