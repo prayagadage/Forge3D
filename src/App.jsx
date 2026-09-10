@@ -11,6 +11,7 @@ import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import MaterialGuide from './pages/MaterialGuide';
 import GetQuote from './pages/GetQuote';
+import About from './pages/About';
 import './index.css';
 
 function Toast() {
@@ -44,6 +45,7 @@ function AppLayout() {
         <Route path="/custom-print" element={<CustomPrint />} />
         <Route path="/materials" element={<MaterialGuide />} />
         <Route path="/get-quote" element={<GetQuote />} />
+        <Route path="/about" element={<About />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
       </Routes>

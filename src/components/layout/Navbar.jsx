@@ -12,6 +12,7 @@ export default function Navbar() {
     { to: '/custom-print', label: 'Custom Print' },
     { to: '/materials', label: 'Material Guide' },
     { to: '/get-quote', label: 'Get a Quote' },
+    { to: '/about', label: 'About' },
   ];
 
   return (
