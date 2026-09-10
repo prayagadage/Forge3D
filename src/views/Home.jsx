@@ -42,10 +42,10 @@ export default function Home() {
               </p>
 
               <div className="hero__actions">
-                <Link to="/explore" className="btn-brutalist-orange">
+                <Link href="/explore" className="btn-brutalist-orange">
                   Explore 3D Models <Arrow />
                 </Link>
-                <Link to="/custom-print" className="btn-brutalist-white">
+                <Link href="/custom-print" className="btn-brutalist-white">
                   Print Your File
                 </Link>
               </div>
@@ -98,7 +98,7 @@ export default function Home() {
                 Ready-made prints,<br />made to order
               </h2>
             </div>
-            <Link to="/explore" style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--sp-2)', color: 'var(--primary-accent)', fontFamily: 'var(--font-display)', fontWeight: 'var(--fw-semibold)', fontSize: 'var(--fs-small)' }}>
+            <Link href="/explore" style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--sp-2)', color: 'var(--primary-accent)', fontFamily: 'var(--font-display)', fontWeight: 'var(--fw-semibold)', fontSize: 'var(--fs-small)' }}>
               Browse the full catalogue <Arrow />
             </Link>
           </div>
@@ -159,7 +159,7 @@ export default function Home() {
               </div>
 
               <div style={{ marginTop: 'var(--sp-8)' }}>
-                <Link to="/custom-print" className="btn-brutalist-dark-purple">
+                <Link href="/custom-print" className="btn-brutalist-dark-purple">
                   Start a custom print <Arrow />
                 </Link>
               </div>

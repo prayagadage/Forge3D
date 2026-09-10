@@ -14,7 +14,7 @@ export default function ProductCard({ product }) {
   const inrPrice = Math.round(product.price * 83).toLocaleString('en-IN');
 
   return (
-    <Link to={`/product/${product.slug}`} className="product-card" aria-label={product.name}>
+    <Link href={`/product/${product.slug}`} className="product-card" aria-label={product.name}>
       <div className="product-card__image-wrap">
         <span className="product-card__category-badge">
           {categoryLabel}

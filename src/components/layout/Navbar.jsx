@@ -10,18 +10,18 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const links = [
-    { to: '/explore', label: 'Shop' },
-    { to: '/custom-print', label: 'Custom Print' },
-    { to: '/materials', label: 'Material Guide' },
-    { to: '/get-quote', label: 'Get a Quote' },
-    { to: '/about', label: 'About' },
+    { href: '/explore', label: 'Shop' },
+    { href: '/custom-print', label: 'Custom Print' },
+    { href: '/materials', label: 'Material Guide' },
+    { href: '/get-quote', label: 'Get a Quote' },
+    { href: '/about', label: 'About' },
   ];
 
   return (
     <>
       <nav className="navbar" role="navigation" aria-label="Main navigation">
         <div className="container navbar__inner">
-          <Link to="/" className="navbar__logo" aria-label="Forge3D home">
+          <Link href="/" className="navbar__logo" aria-label="Forge3D home">
             <div className="navbar__logo-icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
             </div>
@@ -30,7 +30,7 @@ export default function Navbar() {
 
           <div className="navbar__links">
             {links.map(link => (
-              <Link key={link.to} to={link.to} className={`navbar__link ${pathname === link.to ? 'navbar__link--active' : ''}`}>
+              <Link key={link.href} href={link.href} className={`navbar__link ${pathname === link.href ? 'navbar__link--active' : ''}`}>
                 {link.label}
               </Link>
             ))}
@@ -59,7 +59,7 @@ export default function Navbar() {
 
       <div className={`mobile-nav ${mobileOpen ? 'mobile-nav--open' : ''}`}>
         {links.map(link => (
-          <Link key={link.to} to={link.to} onClick={() => setMobileOpen(false)}>{link.label}</Link>
+          <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}>{link.label}</Link>
         ))}
       </div>
     </>

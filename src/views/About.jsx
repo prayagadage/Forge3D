@@ -138,7 +138,7 @@ export default function About() {
             <p className="cta-banner__desc">
               We love showing off our machines. Drop us a line and come say hello.
             </p>
-            <Link to="/get-quote" className="btn btn--primary btn--lg">Get in Touch</Link>
+            <Link href="/get-quote" className="btn btn--primary btn--lg">Get in Touch</Link>
           </div>
         </div>
       </section>

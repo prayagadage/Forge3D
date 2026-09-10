@@ -68,7 +68,7 @@ export default function CartDrawer() {
               <div className="price-summary__row"><span>Shipping</span><span>Calculated at checkout</span></div>
               <div className="price-summary__total"><span>Total</span><span>${cartTotal.toFixed(2)}</span></div>
             </div>
-            <Link to="/checkout" className="btn btn--primary btn--lg btn--full" style={{ marginTop: 'var(--sp-4)' }} onClick={() => setIsOpen(false)}>
+            <Link href="/checkout" className="btn btn--primary btn--lg btn--full" style={{ marginTop: 'var(--sp-4)' }} onClick={() => setIsOpen(false)}>
               Checkout — ${cartTotal.toFixed(2)}
             </Link>
           </div>

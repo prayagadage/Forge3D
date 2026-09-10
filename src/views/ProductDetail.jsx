@@ -25,7 +25,7 @@ export default function ProductDetail() {
             </div>
             <h3 className="empty-state__title">Product not found</h3>
             <p className="empty-state__desc">We couldn't find the product you're looking for.</p>
-            <Link to="/explore" className="btn btn--primary">Browse Products</Link>
+            <Link href="/explore" className="btn btn--primary">Browse Products</Link>
           </div>
         </div>
       </main>
@@ -57,9 +57,9 @@ export default function ProductDetail() {
       <div className="container" style={{ paddingTop: 'var(--sp-6)', paddingBottom: 'var(--sp-16)' }}>
         {/* Breadcrumb */}
         <nav className="product-info__breadcrumb" aria-label="Breadcrumb" style={{ marginBottom: 'var(--sp-6)' }}>
-          <Link to="/">Home</Link>
+          <Link href="/">Home</Link>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
-          <Link to="/explore">Products</Link>
+          <Link href="/explore">Products</Link>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
           <span style={{ color: 'var(--text-primary)' }}>{product.name}</span>
         </nav>

@@ -25,7 +25,7 @@ export default function Checkout() {
             </div>
             <h3 className="empty-state__title">Your cart is empty</h3>
             <p className="empty-state__desc">Add some products before checking out.</p>
-            <Link to="/explore" className="btn btn--primary">Browse Products</Link>
+            <Link href="/explore" className="btn btn--primary">Browse Products</Link>
           </div>
         </div>
       </main>

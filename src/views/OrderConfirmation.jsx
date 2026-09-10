@@ -52,8 +52,8 @@ export default function OrderConfirmation() {
         </div>
 
         <div style={{ marginTop: 'var(--sp-8)', display: 'flex', gap: 'var(--sp-4)', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link to="/explore" className="btn btn--primary btn--lg">Continue Shopping</Link>
-          <Link to="/" className="btn btn--secondary btn--lg">Back to Home</Link>
+          <Link href="/explore" className="btn btn--primary btn--lg">Continue Shopping</Link>
+          <Link href="/" className="btn btn--secondary btn--lg">Back to Home</Link>
         </div>
       </div>
     </main>
