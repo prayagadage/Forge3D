@@ -109,58 +109,60 @@ export default function Home() {
       </section>
 
       {/* ===== SECTION 02: CUSTOM PRINT ===== */}
-      <section className="section section--lavender">
+      <section className="section section--lavender" style={{ background: '#F4EFFF' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: 'var(--sp-10)' }}>
-            <div className="section-label" style={{ justifyContent: 'center' }}>
-              <span className="section-label__num">02</span>
-              <span className="section-label__text">Print Your Own File</span>
-            </div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 'var(--fw-bold)', fontSize: 'var(--fs-h1)', maxWidth: '600px', margin: '0 auto var(--sp-4)' }}>
-              Got an STL gathering dust?
-            </h2>
-            <p style={{ color: 'var(--text-secondary)', maxWidth: '520px', margin: '0 auto', lineHeight: 'var(--lh-relaxed)' }}>
-              Send us your model and watch the estimate build itself. Every custom job goes straight to the owner's inbox — confirmed personally before a single layer is laid.
-            </p>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-8)', alignItems: 'center' }}>
-            <div style={{ borderRadius: 'var(--radius-2xl)', border: '3px solid var(--lavender-200)', overflow: 'hidden', boxShadow: 'var(--shadow-xl)' }}>
-              <img src="/images/hero.jpg" alt="3D printing in action" style={{ width: '100%', display: 'block' }} />
-            </div>
-
-            <div className="step-grid">
-              <div className="step-card">
-                <div className="step-card__label">Step 1</div>
-                <div className="step-card__icon"><FileUp /></div>
-                <div className="step-card__title">Upload your file</div>
-                <div className="step-card__desc">STL, OBJ, 3MF or STEP — drag it in and tell us the specs.</div>
-              </div>
-              <div className="step-card">
-                <div className="step-card__label">Step 2</div>
-                <div className="step-card__icon"><Calculator /></div>
-                <div className="step-card__title">Instant estimate</div>
-                <div className="step-card__desc">See weight, print time and a ₹ price update live as you tweak.</div>
-              </div>
-              <div className="step-card">
-                <div className="step-card__label">Step 3</div>
-                <div className="step-card__icon"><Printer /></div>
-                <div className="step-card__title">We print it</div>
-                <div className="step-card__desc">Tuned profiles on calibrated machines, checked layer by layer.</div>
-              </div>
-              <div className="step-card">
-                <div className="step-card__label">Step 4</div>
-                <div className="step-card__icon"><Truck /></div>
-                <div className="step-card__title">Doorstep delivery</div>
-                <div className="step-card__desc">Packed safe, shipped pan-India within 24–48 hours.</div>
+          <div className="custom-print-section">
+            <div className="custom-print-section__image-col">
+              <div className="brutalist-image-card">
+                <img src="/images/hero.jpg" alt="3D printing in action" />
               </div>
             </div>
-          </div>
 
-          <div style={{ textAlign: 'center', marginTop: 'var(--sp-10)' }}>
-            <Link to="/custom-print" className="btn btn--dark btn--lg">
-              Start a custom print <Arrow />
-            </Link>
+            <div className="custom-print-section__content-col">
+              <div className="section-label" style={{ marginBottom: 'var(--sp-4)' }}>
+                <span className="section-label__num">02</span>
+                <span className="section-label__text section-label__text--orange">Print Your Own File</span>
+              </div>
+              <h2 className="custom-print-section__title">
+                Got an STL gathering dust?
+              </h2>
+              <p className="custom-print-section__desc">
+                Send us your model and watch the estimate build itself. Every custom job goes straight to the owner's inbox — confirmed personally before a single layer is laid.
+              </p>
+
+              <div className="step-grid">
+                <div className="step-card">
+                  <div className="step-card__label">Step 1</div>
+                  <div className="step-card__icon"><FileUp /></div>
+                  <div className="step-card__title">Upload your file</div>
+                  <div className="step-card__desc">STL, OBJ, 3MF or STEP — drag it in and tell us the specs.</div>
+                </div>
+                <div className="step-card">
+                  <div className="step-card__label">Step 2</div>
+                  <div className="step-card__icon"><Calculator /></div>
+                  <div className="step-card__title">Instant estimate</div>
+                  <div className="step-card__desc">See weight, print time and a ₹ price update live as you tweak.</div>
+                </div>
+                <div className="step-card">
+                  <div className="step-card__label">Step 3</div>
+                  <div className="step-card__icon"><Printer /></div>
+                  <div className="step-card__title">We print it</div>
+                  <div className="step-card__desc">Tuned profiles on calibrated machines, checked layer by layer.</div>
+                </div>
+                <div className="step-card">
+                  <div className="step-card__label">Step 4</div>
+                  <div className="step-card__icon"><Truck /></div>
+                  <div className="step-card__title">Doorstep delivery</div>
+                  <div className="step-card__desc">Packed safe, shipped pan-India within 24–48 hours.</div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 'var(--sp-8)' }}>
+                <Link to="/custom-print" className="btn-brutalist-dark-purple">
+                  Start a custom print <Arrow />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
